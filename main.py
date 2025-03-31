@@ -12,9 +12,12 @@ def init_twilio_client():
     client = Client(api_sid, api_secret, account_sid)
     return client.conversations.v1.services(service_sid)
 
+def create_my_conversation(service, address, ms_address):
+    pass
+
 def main():
     service = init_twilio_client()
-    
+    print(service)
     address = f"whatsapp:{os.getenv('PHONE_NUMBER')}"
     ms_address = f"whatsapp:{os.getenv('MS_WHATSAPP_NUMBER')}"
 
