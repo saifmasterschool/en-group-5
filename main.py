@@ -3,6 +3,10 @@ from dotenv import load_dotenv
 from twilio.rest import Client
 import time
 
+NAME = "DESCENDENTS + CIRCLE JERKS"
+LINK = "https://www.astra-berlin.de/events/2025-04-02-descendents---circle-jerks"
+TIME = "Wed, Apr 2, 10 – 11 PM GMT+2"
+DESCRIPTION = "Three ultra legends of american punk join forces for a massive Euro tour in spring 2025. No introductions needed. Secure your tickets asap, this will be sold out quickly!\tEvery Descendents album..."
 
 def init_twilio_client():
     print("Initializing Twilio client...")
@@ -50,6 +54,20 @@ def send_message(conversation, message):
     conversation.messages.create(body=message)
 
 
+def twilio_response(NAME, TIME, LINK, DESCRIPTION):
+    """
+    In current version gets separate parameters and passes them to f string which is then returned.
+    Since we want to return a couple of events for each query it should be refactored so:
+    - accepts a list of dictionaries (or other data type)
+    - creates message for each event
+    - adds message to a list of event_messages
+    - returns a list of messages
+    """
+    message = f'''*{NAME}*\n\n{TIME} \n\n*_more on this event:_* {LINK}\n\n{DESCRIPTION}'''
+
+    return message
+
+
 def main():
     service = init_twilio_client()
     address = f"whatsapp:{os.getenv('PHONE_NUMBER')}"
@@ -59,8 +77,10 @@ def main():
 
     while True:
         user_message = wait_for_user_message(my_conversation, address)
-        send_message(my_conversation,
-                     f"Hey there, got your message: {user_message}, --> Length of your last message: {len(user_message)}")
+        send_message(my_conversation, "Certainly, this is WhatsOn:")
+
+        response = twilio_response(NAME, TIME, LINK, DESCRIPTION)
+        send_message(my_conversation, response)
 
 
 if __name__ == "__main__":
