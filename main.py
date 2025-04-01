@@ -114,10 +114,9 @@ def main():
 
         # tuple with city and time
         api_query = process_user_input(user_message)
-        location, date = api_query
+        print(api_query)
+        # location, date = api_query
 
-        print(location)
-        print(date)
 
         send_message(my_conversation,
                      f"Hey there, got your message: {user_message}, --> Length of your last message: {len(user_message)}")
